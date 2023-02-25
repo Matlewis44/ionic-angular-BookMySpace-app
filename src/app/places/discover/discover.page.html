@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Découvrir les lieux</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-grid>
+    <ion-row>
+      <!-- Ionic pense en 12 colonnes, ici on prend le max
+        mais si on qu'une seule colonne dans la row il prend les 12 par défaut
+        - offset pour centrer-->
+      <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title> {{loadedPlaces[0].title }}</ion-card-title>
+            <ion-card-subtitle>
+              {{loadedPlaces[0].price | currency:"EUR":"symbol"}} /
+              Nuit</ion-card-subtitle
+            >
+          </ion-card-header>
+          <ion-img [src]="loadedPlaces[0].imageUrl"></ion-img>
+          <ion-card-content>
+            <p>{{loadedPlaces[0].description}}</p>
+          </ion-card-content>
+          <div>
+            <!--fill : clear = pas d'arrière-plan ni bordure
+            '/' pour avoir une navigation absolue (pas de bugs)
+            - routerDirection = propiété Ionic qui donne un indice si la direction est vers l'avant ou l'arrière,
+            utile pour une page devant être chargé en premier de l'application
+             et jouer la valeur par défaut d'avance et inversement-->
+            <ion-button
+              fill="clear"
+              color="primary"
+              [routerLink]="['/', 'places', 'tabs', 'discover', loadedPlaces[0].id]"
+            >
+              Détail
+            </ion-button>
+          </div>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <!-- Ici on affiche les lieux après le premier qu'on a mis en dure-->
+    <ion-row>
+      <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
+        <ion-list>
+          <!-- detail = icône fléché pour indiquer éventuel navigation-->
+          <ion-item
+            *ngFor="let place of loadedPlaces.slice(1)"
+            [routerLink]="['/', 'places', 'tabs', 'discover', place.id]"
+            detail
+          >
+            <!--thumbnail englobe les images dans un composant carré -->
+            <ion-thumbnail slot="start">
+              <ion-img [src]="place.imageUrl"></ion-img>
+            </ion-thumbnail>
+            <ion-label>
+              <h2>{{place.title}}</h2>
+              <p>{{place.description}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

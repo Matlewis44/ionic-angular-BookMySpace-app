@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" >
+      <!--defaultHref = important pour redémarrer l'appli web afin de faire fonctionner le retour javascript-->
+      <ion-back-button defaultHref="/places/tabs/discover"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{place?.title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-button color="primary" class="ion-margin" (click)="onBookPlace()">
+    Réserver
+  </ion-button>
+
+</ion-content>

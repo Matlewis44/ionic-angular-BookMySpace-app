@@ -1,3 +1,43 @@
+<!-- on place le menu avant au dessus de l'appli web
+  pour un affichage par-dessus la page (par-dessus l'appli en réalité)-->
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <!--l'id menu doit correspondre à l'id de l'app-->
+  <ion-menu side="start" contentId="main">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>
+          BookMySpace
+        </ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <ion-list>
+        <ion-menu-toggle>
+          <!--Permet de ne pas avoir de lignes entre les items-->
+          <ion-item lines="none" routerLink="/places/tabs/discover">
+            <ion-icon name="business" slot="start"></ion-icon>
+            <ion-label>Découvrir les lieux</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+
+        <ion-menu-toggle>
+          <ion-item lines="none" routerLink="/bookings">
+            <ion-icon name="checkbox-outline" slot="start"></ion-icon>
+            <ion-label>Vos réservations</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+
+        <ion-menu-toggle>
+          <ion-item lines="none" (click) = "onLogout()" button>
+            <ion-icon name="exit" slot="start"></ion-icon>
+            <ion-label>Déconnexion</ion-label>
+          </ion-item>
+      </ion-menu-toggle>
+
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <ion-router-outlet id = "main"></ion-router-outlet>
 </ion-app>
