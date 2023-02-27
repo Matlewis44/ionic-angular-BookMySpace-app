@@ -17,8 +17,8 @@ export class BookingsPage implements OnInit {
   }
 
   onCancelBooking(offerId: string | undefined, sliding: IonItemSliding){
-    sliding.close();
     //Deleting item
+    sliding.close();
   }
 
 }
