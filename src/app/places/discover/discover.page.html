@@ -8,6 +8,10 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  <ion-segment value="all" (ionChange)="onFilterUpdate($event)" >
+    <ion-segment-button value="all">Tous les lieux</ion-segment-button>
+    <ion-segment-button value="bookable">Lieux réservable</ion-segment-button>
+  </ion-segment>
   <ion-grid>
     <ion-row>
       <!-- Ionic pense en 12 colonnes, ici on prend le max
@@ -44,26 +48,26 @@
       </ion-col>
     </ion-row>
 
-    <!-- Ici on affiche les lieux après le premier qu'on a mis en dure-->
+    <!-- Ici on affiche les lieux après le premier qu'on a mis en dure grâce au scroller-->
     <ion-row>
       <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
-        <ion-list>
+        <ion-virtual-scroll [items]="listedLoadedPlaces" approxItemHeight="70px">
           <!-- detail = icône fléché pour indiquer éventuel navigation-->
           <ion-item
-            *ngFor="let place of loadedPlaces.slice(1)"
-            [routerLink]="['/', 'places', 'tabs', 'discover', place.id]"
+            [routerLink]="['/', 'places', 'tabs', 'discover', lieu?.id]"
             detail
+            *virtualItem="let lieu"
           >
-            <!--thumbnail englobe les images dans un composant carré -->
+            <!--thumbnail englobe les images dans un composant carré / avatar dans un rond-->
             <ion-thumbnail slot="start">
-              <ion-img [src]="place.imageUrl"></ion-img>
+              <ion-img [src]="lieu?.imageUrl"></ion-img>
             </ion-thumbnail>
             <ion-label>
-              <h2>{{place.title}}</h2>
-              <p>{{place.description}}</p>
+              <h2>{{lieu?.title}}</h2>
+              <p>{{lieu?.description}}</p>
             </ion-label>
           </ion-item>
-        </ion-list>
+        </ion-virtual-scroll>
       </ion-col>
     </ion-row>
   </ion-grid>
