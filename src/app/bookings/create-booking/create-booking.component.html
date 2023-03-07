@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>{{selectedPlace?.title}}</ion-title>
+    <ion-title>{{ selectedPlace?.title }}</ion-title>
     <ion-buttons slot="primary">
       <ion-button (click)="onCancel()">
         <ion-icon name="close"></ion-icon>
@@ -10,7 +10,94 @@
 </ion-header>
 
 <ion-content class="ion-text-center ion-padding">
-  <ion-img [src]="selectedPlace?.imageUrl"></ion-img>
-  <p>{{selectedPlace?.description}}</p>
-  <ion-button color="primary" (click)="onBookPlace()">Réserver !</ion-button>
+  <form (ngSubmit)="onBookPlace()" #formulaire="ngForm">
+    <ion-grid>
+      <!-- Prénom du client-->
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Prénom</ion-label>
+            <ion-input type="text" ngModel name ="firstName" required></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <!-- Nom du client-->
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Nom</ion-label>
+            <ion-input type="text" ngModel name="lastName" required></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <!-- Nombre d'invités du client-->
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Liste des invités</ion-label>
+            <!-- Ici on pré-selectionne le choix numéro 2-->
+            <ion-select [ngModel]="'2'" name="guestNumber">
+              <ion-select-option value="1">1</ion-select-option>
+              <ion-select-option value="2">2</ion-select-option>
+              <ion-select-option value="3">3</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <!-- Calendrier-->
+      <ion-row>
+        <ion-col size-sm="3" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Date d'arrivée</ion-label>
+            <ion-datetime
+              display-format="MMM DD YYYY"
+              picker-format="YY MMM DD"
+              [min]="selectedPlace?.availableFrom?.toISOString()"
+              [max]="selectedPlace?.availableTo?.toISOString()"
+              [ngModel]="startDate"
+              name="dateFrom"
+              required
+              #startDateCtrl="ngModel"
+            ></ion-datetime>
+          </ion-item>
+        </ion-col>
+        <ion-col size-sm="3" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Date de fin</ion-label>
+            <ion-datetime
+              display-format="MMM DD YYYY"
+              picker-format="YY MMM DD"
+              [min]="startDateCtrl.value"
+              [max]="selectedPlace?.availableTo?.toISOString()"
+              [ngModel]="endDate"
+              name="dateTo"
+              required
+            ></ion-datetime>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <!-- Image - Description et Bouton-->
+      <ion-row>
+        <ion-col size-sm="3" offset-sm="3">
+          <ion-img [src]="selectedPlace?.imageUrl"></ion-img>
+          <p>{{ selectedPlace?.description }}</p>
+          <ion-button type="submit" color="primary" expand="block" [disabled]="!formulaire.valid || !datesValid()">Réserver !</ion-button>
+        </ion-col>
+      </ion-row>
+      <!-- Error message-->
+      <ion-row class="error" *ngIf="formulaire.valid && !datesValid()">
+        <ion-col>
+          <p>La date d'arrivée ne peut être postérieur à la date de retour.</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
+<!--ion-row>
+      <ion-col size-sm="3" offset-sm="3">
+        <ion-button type="submit" color="primary" (click)="onBookPlace()">Réserver !</ion-button>
+      </ion-col>
+    </ion-row-->
 </ion-content>

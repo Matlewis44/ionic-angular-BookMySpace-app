@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class AuthService {
   private _userIsAuthentificated = true;
+  private _userId = 'abc';
 
   //On englobe l'état et on le récupère
   get getUserIsAuthentificated() {
@@ -12,6 +13,10 @@ export class AuthService {
   }
 
   constructor() { }
+
+  get userId(){
+    return this._userId;
+  }
 
 /*De cette façon on évite l'écrasement accidentelle de la variable,
 en créant une accessibilté unique par méthode

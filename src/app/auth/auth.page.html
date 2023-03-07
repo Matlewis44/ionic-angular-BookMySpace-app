@@ -38,7 +38,7 @@
           </div>
           <ion-button color="primary" (click)="onLogin()" *ngIf="!isLoading">Se connecter</ion-button-->
 
-          <ion-button type="submit" color="primary" (click)="onLogin()" expand="block" [disabled]="!formulaire.valid">{{isLogin ? 'Connexion' : 'Inscription'}}</ion-button>
+          <ion-button type="submit" color="primary" (click)="onLogin()" expand="block" >{{isLogin ? 'Connexion' : 'Inscription'}}</ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>

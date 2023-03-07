@@ -20,8 +20,8 @@ export class DiscoverPage implements OnInit {
 
   //Grace au service, on accède aux places du tab avec le getter du service
   ngOnInit() {
-    this.loadedPlaces = this.placesService.clonePlaces;
-    this.listedLoadedPlaces = this.placesService.clonePlaces;
+    this.loadedPlaces = this.placesService.cloneAllPlaces;
+    this.listedLoadedPlaces = this.placesService.cloneAllPlaces;
   }
   onFilterUpdate(event: any) {
     console.log('Nouvelle valeur sélectionnée :', event.detail.value);

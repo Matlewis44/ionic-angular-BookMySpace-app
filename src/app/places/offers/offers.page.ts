@@ -18,7 +18,7 @@ export class OffersPage implements OnInit {
   constructor(private placesService: PlacesService, private router : Router, private menuCtrl: MenuController) { }
 
   ngOnInit() {
-    this.offers = this.placesService.clonePlaces;
+    this.offers = this.placesService.cloneAllPlaces;
   }
 
   onEdit(offerID: string | undefined, slidingItem: IonItemSliding){

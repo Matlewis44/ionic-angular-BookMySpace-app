@@ -12,7 +12,6 @@ import { AuthService } from './auth.service';
 export class AuthPage implements OnInit {
   /*On injecte un loading Controller pour empêcher vraiment toute activité
   pendant le chargement grâce à une superposition (overlay)*/
-  private userIsAuthentificated = false;
   isLoading = false;
   isLogin= true;
 
