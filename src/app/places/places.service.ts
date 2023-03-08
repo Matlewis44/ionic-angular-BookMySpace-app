@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { title } from 'process';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { delay, take, tap } from 'rxjs/operators';
+import { delay, map, take, tap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { Place } from './place.model';
 
@@ -10,6 +10,8 @@ import { Place } from './place.model';
   providedIn: 'root',
 })
 export class PlacesService {
+  [x: string]: any;
+  //BehaviorSubject permet l'affichage de l'ajout même si la page ne se recharge jamais
   private _places = new BehaviorSubject<Place[]>([
     new Place(
       'p1',
@@ -18,7 +20,8 @@ export class PlacesService {
       'https://res.cloudinary.com/hello-tickets/image/upload/c_limit,f_auto,q_auto,w_1300/v1665543787/acmhg2fqije0icvm2hzr.jpg',
       149.99,
       new Date('2023-01-01'),
-      new Date('2023-12-31')
+      new Date('2023-12-31'),
+      'abc'
     ),
     new Place(
       'p2',
@@ -27,7 +30,8 @@ export class PlacesService {
       'https://www.bvjhostelparis.com/wp-content/uploads/2016/09/activites-paris-nuit.jpg',
       189.99,
       new Date('2023-01-01'),
-      new Date('2023-12-31')
+      new Date('2023-12-31'),
+      'abc'
     ),
     new Place(
       'p3',
@@ -36,7 +40,8 @@ export class PlacesService {
       'https://lepetitjournal.com/sites/default/files/styles/main_article/public/2018-08/iStock-615398376.jpg?itok=1k6w3RiH',
       99.99,
       new Date('2023-01-01'),
-      new Date('2023-12-31')
+      new Date('2023-12-31'),
+      'abc'
     ),
     new Place(
       'p4',
@@ -45,7 +50,8 @@ export class PlacesService {
       'https://download.vikidia.org/vikidia/fr/images/9/90/Colis%C3%A9e_%28de_nuit%29_%C3%A0_Rome.jpg',
       129.99,
       new Date('2023-01-01'),
-      new Date('2023-12-31')
+      new Date('2023-12-31'),
+      'abc'
     ),
     new Place(
       'p5',
@@ -54,7 +60,8 @@ export class PlacesService {
       'https://media.timeout.com/images/105879414/image.jpg',
       129.99,
       new Date('2023-01-01'),
-      new Date('2023-12-31')
+      new Date('2023-12-31'),
+      'abc'
     ),
     new Place(
       'p6',
@@ -63,7 +70,8 @@ export class PlacesService {
       'https://a.cdn-hotels.com/gdcs/production163/d1616/24e46678-07e1-4f27-93d3-9eb979c2ae5e.jpg?impolicy=fcrop&w=800&h=533&q=medium',
       149.99,
       new Date('2023-01-01'),
-      new Date('2023-12-31')
+      new Date('2023-12-31'),
+      'abc'
     ),
     new Place(
       'p7',
@@ -72,7 +80,8 @@ export class PlacesService {
       'https://resize-parismatch.lanmedia.fr/var/pm/public/media/image/2022/07/13/17/croatie-72-heures-a-dubrovnik.jpg?VersionId=IyPwn3J11RNlEKVARmO8BKdyuHXZRW6h',
       139.99,
       new Date('2023-01-01'),
-      new Date('2023-12-31')
+      new Date('2023-12-31'),
+      'abc'
     )
   ]);
 
@@ -83,12 +92,17 @@ export class PlacesService {
 
   constructor(private authService: AuthService) {}
 
-  /*Si nous devions l'ajouter, nous n'éditerions pas l'objet d'origine
+  /*On retourne un Observable qui émet un objet contenant les détails du lieu recherché.
+  Le code utilise également le spread operator (...)
+  pour créer une copie de l'objet lieu.
+  Ainsi, tout changement effectué sur l'objet retourné par getPlace() n'affectera pas l'objet d'origine.
   car on bosse sur un clône grâce au spread operator.
   --> Bon pattern
   */
   getPlace(id: string){
-    return  {...this._places.find(lieu => lieu.id === id)};
+    return  this._places.pipe(take(1), map(places =>{
+      return{...places.find(lieu => lieu.id === id)};
+    }));
   }
 
   addPlace(title: string, description: string, price: number, dateFrom: Date, dateTo: Date) {
@@ -108,12 +122,8 @@ export class PlacesService {
    - Concat prend le tab où on l'appel,
     ajoute un nouvel emplacement et renvoie le nouveau tab
     */
-    return this._places.pipe(
-      take(1),
-      delay(1000),
-      tap(places => {
-        this._places.next(places.concat(newPlace));
-      })
-    );
+    this._places.pipe(take(1)).subscribe(places => {
+      this._places.next(places.concat(newPlace));
+    });
   }
 }
